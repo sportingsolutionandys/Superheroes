@@ -13,9 +13,22 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
+    <PackageReference Include="Moq" Version="4.11.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SuperHeroes\SuperHeroes.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\RESGISTRADOS.DAT">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="HelperMethods\" />
   </ItemGroup>
 </Project>

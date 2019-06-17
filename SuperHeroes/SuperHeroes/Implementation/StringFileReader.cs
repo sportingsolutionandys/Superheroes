@@ -10,26 +10,28 @@ namespace SuperHeroes.Implementation
     public class StringFileReader : IFileReader<string>
     {
         private IConfiguration _configuration;
-        public List<string> fileContents;
+        private readonly string FILE_LOCATION_CONFIG = "DataFileLocation";
 
         public StringFileReader(IConfiguration configuration)
         {
             _configuration = configuration;
-            fileContents = new List<string>();
+
         }
 
         public List<string> ReadFromFile()
         {
-            // Check if file contents has already been loaded
-            try 
-            {
-                var fileLocation = _configuration.GetValue<string>("DataFileLocation");
-                //Set the path to read the file from
-                var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileLocation);
-                string line;
+            var fileContents = new List<string>();
 
-                //Read from file and add to list
-                var file = new System.IO.StreamReader(path);
+            var fileLocation = _configuration.GetValue<string>(FILE_LOCATION_CONFIG);
+
+            //Set the path to read the file from
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileLocation);
+
+            //Read from file and add to list
+            string line;
+            var file = new System.IO.StreamReader(path);
+            try
+            {
                 while ((line = file.ReadLine()) != null)
                 {
                     //Dont add if line is empty
@@ -38,11 +40,19 @@ namespace SuperHeroes.Implementation
                         fileContents.Add(line);
                     }
                 }
-                file.Close();
             }
             catch (Exception e) 
             {
+                // Log file reader exception
                 throw new IOException(e.Message);
+            }
+            finally
+            {
+                // close the file connection
+                if (file != null)
+                {
+                    file.Close();
+                }
             }
             return fileContents;
         }
