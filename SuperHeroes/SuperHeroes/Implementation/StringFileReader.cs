@@ -9,7 +9,7 @@ namespace SuperHeroes.Implementation
 {
     public class StringFileReader : IFileReader<string>
     {
-        public IConfiguration _configuration;
+        private IConfiguration _configuration;
         public List<string> fileContents;
 
         public StringFileReader(IConfiguration configuration)
@@ -20,18 +20,30 @@ namespace SuperHeroes.Implementation
 
         public List<string> ReadFromFile()
         {
-            var fileLocation = _configuration.GetValue<string>("DataFileLocation");
-            //Set the path to read the file from
-            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileLocation);
-            string line;
-
-            //Read from file and add to list
-            var file = new System.IO.StreamReader(path);
-            while ((line = file.ReadLine()) != null)
+            // Check if file contents has already been loaded
+            try 
             {
-                fileContents.Add(line);
+                var fileLocation = _configuration.GetValue<string>("DataFileLocation");
+                //Set the path to read the file from
+                var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileLocation);
+                string line;
+
+                //Read from file and add to list
+                var file = new System.IO.StreamReader(path);
+                while ((line = file.ReadLine()) != null)
+                {
+                    //Dont add if line is empty
+                    if (!string.IsNullOrWhiteSpace(line)) 
+                    {
+                        fileContents.Add(line);
+                    }
+                }
+                file.Close();
             }
-            file.Close();
+            catch (Exception e) 
+            {
+                throw new IOException(e.Message);
+            }
             return fileContents;
         }
     }

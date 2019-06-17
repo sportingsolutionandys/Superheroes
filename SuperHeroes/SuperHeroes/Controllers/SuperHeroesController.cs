@@ -19,11 +19,11 @@ namespace SuperHeroes.Controllers
             _superHeroesHandler = superHeroesHandler;
         }
 
-        // GET api/values
+        // GET api/superheroes
         [HttpGet]
         public ActionResult<Characters> Get()
         {
-            var sortedCharacters = _superHeroesHandler.ApplySorting();
+            var sortedCharacters = _superHeroesHandler.GetCharacters();
             return sortedCharacters;
         }
 

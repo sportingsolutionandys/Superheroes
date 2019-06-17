@@ -5,23 +5,27 @@ using SuperHeroes.Models;
 
 namespace SuperHeroes.Implementation
 {
-    public class SuperHeroHandler : IHandler<Characters>
+    public class SuperHeroesHandler : IHandler<Characters>
     {
         private IFileReader<string> _fileReader;
         private ISuperHeroesRule _superheroesRule;
+        private Characters _characters;
         
-        public SuperHeroHandler(IFileReader<string> fileReader, ISuperHeroesRule superHeroesRule)
+        public SuperHeroesHandler(IFileReader<string> fileReader, ISuperHeroesRule superHeroesRule)
         {
             _fileReader = fileReader;
             _superheroesRule = superHeroesRule;
         }
 
-        public Characters ApplySorting() {
-            var fileContents = GetFileContents();
-            // Remove any duplicates in the file
-            var duplicatesRemoved = fileContents.Distinct().ToList();
-            var characters = SortSuperHeroes(duplicatesRemoved);
-            return characters;
+        public Characters GetCharacters() {
+            if (_characters == null) 
+            {
+                var fileContents = GetFileContents();
+                // Remove any duplicates in the file
+                var duplicatesRemoved = fileContents.Distinct().ToList();
+                _characters = SortSuperHeroes(duplicatesRemoved);
+            }
+            return _characters;
         }
 
         private List<string> GetFileContents() 

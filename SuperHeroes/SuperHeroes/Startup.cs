@@ -33,7 +33,7 @@ namespace SuperHeroes
                 .AddXmlSerializerFormatters();
             services.AddSingleton<IFileReader<string>, StringFileReader>();
             services.AddSingleton<ISuperHeroesRule, ContainsDRule>();
-            services.AddSingleton<IHandler<Characters>, SuperHeroHandler>();
+            services.AddSingleton<IHandler<Characters>, SuperHeroesHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
