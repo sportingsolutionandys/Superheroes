@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 using SuperHeroes.Implementation;
+using SuperHeroesUnitTests.HelperMethods;
 
 namespace SuperHeroesUnitTests
 {
     public class ContainsDRuleUnitTests
     {
+        public Mock<ILogger<ContainsDRule>> getMockLogger()
+        {
+            return MockLogger.GetLogger<ContainsDRule>();
+        }
+
         public List<string> testInputContents = new List<string>() 
         { "Bad Guy", "Good Guy", "OlD guy 1", "Old Guy 2", "Death"}; 
 
@@ -14,7 +22,8 @@ namespace SuperHeroesUnitTests
         public void ContainsDRuleSperatesCharactersCorrectly()
         {
             //Arrange
-            var containsDRule = new ContainsDRule();
+            var mockLogger = getMockLogger();
+            var containsDRule = new ContainsDRule(mockLogger.Object);
 
             //Act
             var characters = containsDRule.ApplyRule(testInputContents);
@@ -31,7 +40,8 @@ namespace SuperHeroesUnitTests
         public void ContainsDRuleOnlySperatesUppercaseD()
         {
             //Arrange
-            var containsDRule = new ContainsDRule();
+            var mockLogger = getMockLogger();
+            var containsDRule = new ContainsDRule(mockLogger.Object);
 
             //Act
             var characters = containsDRule.ApplyRule(testInputContents);

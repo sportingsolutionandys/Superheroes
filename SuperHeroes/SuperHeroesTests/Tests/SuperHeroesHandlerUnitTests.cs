@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SuperHeroes.Controllers;
 using SuperHeroes.Implementation;
 using SuperHeroes.Interfaces;
 using SuperHeroes.Models;
+using SuperHeroesUnitTests.HelperMethods;
 
 namespace SuperHeroesUnitTests
 {
     public class SuperHeroesHandlerUnitTests
     {
+        public Mock<ILogger<SuperHeroesHandler>> getMockLogger()
+        {
+            return MockLogger.GetLogger<SuperHeroesHandler>();
+        }
+
         [Test]
         public void SuperHeroesHandlerShouldReturnListOfCharactersSuccessfully()
         {
@@ -26,7 +33,11 @@ namespace SuperHeroesUnitTests
             mockSuperHeroesRule.Setup(x => x.ApplyRule(dummyList))
                   .Returns(new Characters() { Villains = new List<string>() { "Villain1"} });
 
-            var superHeroesHandler = new SuperHeroesHandler(mockIFileReader.Object, mockSuperHeroesRule.Object);
+            var mockLogger = getMockLogger();
+
+            var superHeroesHandler = new SuperHeroesHandler(mockIFileReader.Object, 
+                                                            mockSuperHeroesRule.Object,
+                                                            mockLogger.Object);
 
             //Act
             var result = superHeroesHandler.GetCharacters();
@@ -46,7 +57,11 @@ namespace SuperHeroesUnitTests
 
             var mockSuperHeroesRule = new Mock<ISuperHeroesRule>();
 
-            var superHeroesHandler = new SuperHeroesHandler(mockIFileReader.Object, mockSuperHeroesRule.Object);
+            var mockLogger = getMockLogger();
+
+            var superHeroesHandler = new SuperHeroesHandler(mockIFileReader.Object, 
+                                                            mockSuperHeroesRule.Object,
+                                                            mockLogger.Object);
 
             //Act
             var result = superHeroesHandler.RemoveDuplicatesFromList(dummyList);

@@ -3,21 +3,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SuperHeroes.Interfaces;
 
 namespace SuperHeroes.Implementation
 {
+    /// <summary>
+    /// String file reader.
+    /// This class reads the contents of the file from the specified location
+    /// </summary>
     public class StringFileReader : IFileReader<string>
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
         private readonly string FILE_LOCATION_CONFIG = "DataFileLocation";
 
-        public StringFileReader(IConfiguration configuration)
+        public StringFileReader(IConfiguration configuration, ILogger<StringFileReader> logger)
         {
             _configuration = configuration;
+            _logger = logger;
 
         }
 
+        /// <summary>
+        /// Reads from file.
+        /// </summary>
+        /// <returns>The from file.</returns>
         public List<string> ReadFromFile()
         {
             var fileContents = new List<string>();
@@ -40,11 +51,12 @@ namespace SuperHeroes.Implementation
                         fileContents.Add(line);
                     }
                 }
+                _logger.LogInformation("Contents of file successfully read");
             }
             catch (Exception e) 
             {
                 // Log file reader exception
-                throw new IOException(e.Message);
+                _logger.LogWarning(e.Message);
             }
             finally
             {

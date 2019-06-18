@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SuperHeroes.Models
 {
+    /// <summary>
+    /// Characters - made up of lists of Superheroes and Villains
+    /// </summary>
     public class Characters
     {
         public List<string> Superheroes { get; set; }

@@ -7,6 +7,7 @@ using SuperHeroes.Interfaces;
 using SuperHeroes.Models;
 using Xunit;
 using Moq;
+using Microsoft.Extensions.Logging;
 
 namespace SuperHeroesIntegrationTest
 {
@@ -78,7 +79,9 @@ namespace SuperHeroesIntegrationTest
             var mocksuperHeroesHandler = new Mock<IHandler<Characters>>();
             mocksuperHeroesHandler.Setup(x => x.GetCharacters())
                   .Returns(new Characters());
-            var superHeroesController = new SuperHeroesController(mocksuperHeroesHandler.Object);
+
+            var mockLogger = new Mock<ILogger<SuperHeroesController>>();
+            var superHeroesController = new SuperHeroesController(mocksuperHeroesHandler.Object, mockLogger.Object);
 
             //Act
             var result = superHeroesController.Get();
