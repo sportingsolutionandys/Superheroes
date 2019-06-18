@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperHeroes", "SuperHeroes\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperHeroesUnitTests", "SuperHeroesTests\SuperHeroesUnitTests.csproj", "{02BA1B19-C381-47A0-8BB7-15280A8E0373}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperHeroesIntegrationTest", "SuperHeroesIntegrationTest\SuperHeroesIntegrationTest.csproj", "{18EE0C52-5B38-46A0-B40A-006916271D4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperHeroesIntegrationTests", "SuperHeroesIntegrationTest\SuperHeroesIntegrationTests.csproj", "{18EE0C52-5B38-46A0-B40A-006916271D4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

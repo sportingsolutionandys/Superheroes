@@ -9,7 +9,7 @@ using Xunit;
 using Moq;
 using Microsoft.Extensions.Logging;
 
-namespace SuperHeroesIntegrationTest
+namespace SuperHeroesIntegrationTests
 {
     public class SuperHeroesControllerIntegrationTests : IClassFixture<WebApplicationFactory<SuperHeroes.Startup>>
     {
