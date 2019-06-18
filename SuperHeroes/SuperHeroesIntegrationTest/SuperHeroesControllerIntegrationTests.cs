@@ -1,17 +1,20 @@
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using SuperHeroes.Controllers;
+using SuperHeroes.Interfaces;
 using SuperHeroes.Models;
 using Xunit;
+using Moq;
 
 namespace SuperHeroesIntegrationTest
 {
-    public class SuperHeroesControllerTests : IClassFixture<WebApplicationFactory<SuperHeroes.Startup>>
+    public class SuperHeroesControllerIntegrationTests : IClassFixture<WebApplicationFactory<SuperHeroes.Startup>>
     {
         private readonly WebApplicationFactory<SuperHeroes.Startup> _factory;
 
-        public SuperHeroesControllerTests(WebApplicationFactory<SuperHeroes.Startup> factory)
+        public SuperHeroesControllerIntegrationTests(WebApplicationFactory<SuperHeroes.Startup> factory)
         {
             _factory = factory;
         }
@@ -61,14 +64,28 @@ namespace SuperHeroesIntegrationTest
 
             // Act
             var response = await client.GetAsync(url);
-
-            // Assert
-            response.EnsureSuccessStatusCode(); // Status Code 200-299
             var characters = response.Content.ReadAsAsync<Characters>();
 
-            //Check that there are characters returned
+            //Assert
             var totalCountofCharacters = characters.Result.Superheroes.Count + characters.Result.Villains.Count;
             Assert.NotEqual(0,totalCountofCharacters);
+        }
+
+        [Fact]
+        public void Get_SuperHeroesControllerShouldReturnNotFoundWhenThereAreNoCharacters()
+        {
+            //Arrange
+            var mocksuperHeroesHandler = new Mock<IHandler<Characters>>();
+            mocksuperHeroesHandler.Setup(x => x.GetCharacters())
+                  .Returns(new Characters());
+            var superHeroesController = new SuperHeroesController(mocksuperHeroesHandler.Object);
+
+            //Act
+            var result = superHeroesController.Get();
+            var resultType = result.Result;
+
+            //Assert
+            Assert.IsType<NotFoundResult>(resultType);
         }
 
 

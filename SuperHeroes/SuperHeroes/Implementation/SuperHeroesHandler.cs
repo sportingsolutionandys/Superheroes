@@ -20,12 +20,19 @@ namespace SuperHeroes.Implementation
         public Characters GetCharacters() {
             if (_characters == null) 
             {
+                //Read contents of file
                 var fileContents = GetFileContents();
                 // Remove any duplicates in the file
-                var duplicatesRemoved = fileContents.Distinct().ToList();
+                var duplicatesRemoved = RemoveDuplicatesFromList(fileContents);
+                //Sort based on rule
                 _characters = SortSuperHeroes(duplicatesRemoved);
             }
             return _characters;
+        }
+
+        public List<string> RemoveDuplicatesFromList(List<string> fileContents) 
+        {
+            return fileContents.Distinct().ToList();
         }
 
         private List<string> GetFileContents() 
