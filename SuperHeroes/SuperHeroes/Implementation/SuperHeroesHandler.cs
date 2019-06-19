@@ -34,6 +34,7 @@ namespace SuperHeroes.Implementation
         /// </summary>
         /// <returns>The characters.</returns>
         public Characters GetCharacters() {
+            //Check to see if characters have already been populated
             if (_characters == null) 
             {
                 //Read contents of file
